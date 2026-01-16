@@ -1,0 +1,14 @@
+/node_modules
+/dist
+/dist-ssr
+/build
+/coverage
+*.log
+
+backend/.env
+frontend-web/.env
+
+.DS_Store
+Thumbs.db
+
+*.local

@@ -1,0 +1,2357 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentação Completa - MVP Plataforma Fiscal</title>
+    <style>
+        @page {
+            margin: 2cm;
+            size: A4;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: white;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .cover {
+            page-break-after: always;
+            text-align: center;
+            padding: 100px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: -20px;
+            margin-bottom: 40px;
+        }
+        
+        .cover h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .cover .subtitle {
+            font-size: 24px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        .cover .meta {
+            font-size: 14px;
+            margin-top: 60px;
+            opacity: 0.8;
+        }
+        
+        .toc {
+            page-break-after: always;
+            padding: 40px 0;
+        }
+        
+        .toc h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .toc-item {
+            padding: 10px 0;
+            margin-left: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .toc-item.level-1 {
+            font-weight: 600;
+            font-size: 18px;
+            margin-left: 0;
+            margin-top: 15px;
+        }
+        
+        .toc-item.level-2 {
+            margin-left: 20px;
+            font-size: 16px;
+        }
+        
+        .toc-item.level-3 {
+            margin-left: 40px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        h1 {
+            font-size: 36px;
+            color: #667eea;
+            margin: 40px 0 20px 0;
+            page-break-before: always;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            font-size: 28px;
+            color: #764ba2;
+            margin: 30px 0 15px 0;
+            border-left: 5px solid #764ba2;
+            padding-left: 15px;
+        }
+        
+        h3 {
+            font-size: 22px;
+            color: #555;
+            margin: 25px 0 12px 0;
+        }
+        
+        h4 {
+            font-size: 18px;
+            color: #666;
+            margin: 20px 0 10px 0;
+        }
+        
+        p {
+            margin: 10px 0;
+            text-align: justify;
+        }
+        
+        .highlight-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .critical-box {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+        
+        .badge-critical {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .badge-high {
+            background: #fd7e14;
+            color: white;
+        }
+        
+        .badge-medium {
+            background: #ffc107;
+            color: #000;
+        }
+        
+        .badge-low {
+            background: #28a745;
+            color: white;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline-item {
+            padding: 15px 0 15px 40px;
+            border-left: 3px solid #667eea;
+            margin-left: 20px;
+            position: relative;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 20px;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: #667eea;
+            border: 3px solid white;
+        }
+        
+        .week-title {
+            font-weight: 600;
+            font-size: 18px;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        
+        @media print {
+            body {
+                margin: 0;
+            }
+            
+            .no-print {
+                display: none;
+            }
+            
+            h1 {
+                page-break-before: always;
+            }
+            
+            h2, h3 {
+                page-break-after: avoid;
+            }
+            
+            table, pre, .highlight-box {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- CAPA -->
+<div class="cover">
+    <h1>📊 Plataforma Fiscal</h1>
+    <div class="subtitle">Documentação Técnica Completa do MVP</div>
+    <div class="subtitle" style="font-size: 18px;">Guia de Desenvolvimento em 8 Semanas</div>
+    <div class="meta">
+        <p>Versão 1.0 | Janeiro 2026</p>
+        <p>Desenvolvedor: Levi Miquéias Lima e Silva</p>
+    </div>
+</div>
+
+<!-- ÍNDICE -->
+<div class="toc">
+    <h2>📑 Índice</h2>
+    
+    <div class="toc-item level-1">1. Visão Geral do Produto</div>
+    <div class="toc-item level-2">1.1 Problema e Proposta de Valor</div>
+    <div class="toc-item level-2">1.2 Público-Alvo</div>
+    <div class="toc-item level-2">1.3 Princípios Não-Negociáveis</div>
+    
+    <div class="toc-item level-1">2. Decisões Estratégicas</div>
+    <div class="toc-item level-2">2.1 Stack Tecnológica</div>
+    <div class="toc-item level-2">2.2 O Que Entra e Sai do MVP</div>
+    
+    <div class="toc-item level-1">3. Arquitetura do Sistema</div>
+    <div class="toc-item level-2">3.1 Visão Geral</div>
+    <div class="toc-item level-2">3.2 Camadas da Aplicação</div>
+    <div class="toc-item level-2">3.3 Fluxo de Dados</div>
+    
+    <div class="toc-item level-1">4. Modelo de Dados</div>
+    <div class="toc-item level-2">4.1 Entidades Principais</div>
+    <div class="toc-item level-2">4.2 Relacionamentos</div>
+    <div class="toc-item level-2">4.3 Índices e Performance</div>
+    
+    <div class="toc-item level-1">5. Funcionalidades Core</div>
+    <div class="toc-item level-2">5.1 Consolidação Financeira</div>
+    <div class="toc-item level-2">5.2 Entrada de Dados (IA-First)</div>
+    <div class="toc-item level-2">5.3 Classificação Fiscal</div>
+    
+    <div class="toc-item level-1">6. Roadmap de Desenvolvimento</div>
+    <div class="toc-item level-2">6.1 Semana 1-3: Fundação</div>
+    <div class="toc-item level-2">6.2 Semana 4-6: Features Core</div>
+    <div class="toc-item level-2">6.3 Semana 7-8: Polish e Simulações</div>
+    
+    <div class="toc-item level-1">7. User Journeys</div>
+    <div class="toc-item level-2">7.1 Onboarding</div>
+    <div class="toc-item level-2">7.2 Entrada por Voz</div>
+    <div class="toc-item level-2">7.3 Upload de Documentos</div>
+    
+    <div class="toc-item level-1">8. Estrutura do Projeto</div>
+    <div class="toc-item level-2">8.1 Backend (NestJS)</div>
+    <div class="toc-item level-2">8.2 Mobile (React Native)</div>
+    
+    <div class="toc-item level-1">9. Setup e Instalação</div>
+    <div class="toc-item level-2">9.1 Pré-requisitos</div>
+    <div class="toc-item level-2">9.2 Configuração Backend</div>
+    <div class="toc-item level-2">9.3 Configuração Mobile</div>
+    
+    <div class="toc-item level-1">10. Segurança e Compliance</div>
+    <div class="toc-item level-2">10.1 Autenticação e Autorização</div>
+    <div class="toc-item level-2">10.2 LGPD e Proteção de Dados</div>
+    <div class="toc-item level-2">10.3 Disclaimers Jurídicos</div>
+    
+    <div class="toc-item level-1">11. Custos e Infraestrutura</div>
+    <div class="toc-item level-1">12. Próximos Passos</div>
+    <div class="toc-item level-1">13. Apêndices</div>
+</div>
+
+<!-- CONTEÚDO PRINCIPAL -->
+
+<h1>1. Visão Geral do Produto</h1>
+
+<h2>1.1 Problema e Proposta de Valor</h2>
+
+<div class="highlight-box">
+    <h4>🎯 Problema Central</h4>
+    <p>Pessoas físicas e autônomos não têm a mesma visão financeira-fiscal que a Receita Federal já possui sobre eles, o que gera:</p>
+    <ul>
+        <li><strong>Malha fina</strong> por inconsistências não detectadas</li>
+        <li><strong>Multas</strong> inesperadas e evitáveis</li>
+        <li><strong>Decisões financeiras ruins</strong> por falta de visibilidade</li>
+        <li><strong>Medo e insegurança tributária</strong></li>
+    </ul>
+</div>
+
+<h3>Contexto Legislativo Atual</h3>
+
+<p>O problema se agravou significativamente com três mudanças recentes:</p>
+
+<ol>
+    <li><strong>IN RFB nº 2.278/2025</strong> - e-Financeira ampliada com mais instituições reportantes</li>
+    <li><strong>Rearp</strong> - Regularização e Atualização Patrimonial</li>
+    <li><strong>Integração fluxo financeiro + patrimônio</strong> - A Receita agora cruza dados de forma mais eficiente</li>
+</ol>
+
+<div class="success-box">
+    <h4>💡 Proposta de Valor</h4>
+    <p><strong>"A Receita já sabe. Nosso app garante que você saiba antes."</strong></p>
+    <p>Entregar ao contribuinte uma visão consolidada, inteligível e antecipada da sua realidade financeira e fiscal, usando IA para eliminar fricção na entrada de dados.</p>
+</div>
+
+<h2>1.2 Público-Alvo do MVP</h2>
+
+<h3>Público Primário</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Perfil</th>
+            <th>Características</th>
+            <th>Dores Principais</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Pessoas Físicas</strong></td>
+            <td>
+                • Múltiplas contas bancárias<br>
+                • PIX recorrente<br>
+                • Investimentos diversos<br>
+                • Receitas de aluguel
+            </td>
+            <td>
+                • Perda de controle<br>
+                • Medo da malha fina<br>
+                • Não sabe o que é tributável
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Autônomos</strong></td>
+            <td>
+                • Receitas irregulares<br>
+                • Despesas dedutíveis<br>
+                • Baixa organização contábil<br>
+                • Sem estrutura empresarial
+            </td>
+            <td>
+                • Documentação caótica<br>
+                • Perda de deduções<br>
+                • Cálculos manuais complexos
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="highlight-box">
+    <h4>🎯 Perfil-Chave</h4>
+    <p>Quem <strong>não é simples</strong>, mas também <strong>não é empresa estruturada</strong>. É o "meio termo" que mais sofre com a falta de ferramentas adequadas.</p>
+</div>
+
+<h2>1.3 Princípios Não-Negociáveis</h2>
+
+<div class="critical-box">
+    <h4>⚠️ PRINCÍPIOS INVIOLÁVEIS</h4>
+    <ol>
+        <li>O app <strong>NÃO substitui contador</strong></li>
+        <li>O app <strong>NÃO executa ações fiscais</strong></li>
+        <li>O app <strong>NÃO promete isenção</strong></li>
+        <li>O app <strong>NÃO esconde dados</strong></li>
+        <li>O app <strong>EDUCA antes de automatizar</strong></li>
+    </ol>
+    <p style="margin-top: 15px;"><strong>Esses princípios blindam juridicamente e aumentam confiança.</strong></p>
+</div>
+
+<!-- DECISÕES ESTRATÉGICAS -->
+
+<h1>2. Decisões Estratégicas</h1>
+
+<h2>2.1 Stack Tecnológica</h2>
+
+<h3>Justificativa da Escolha</h3>
+
+<p>A stack foi escolhida considerando:</p>
+<ul>
+    <li>✅ Experiência prévia do desenvolvedor (Levi)</li>
+    <li>✅ Velocidade de desenvolvimento</li>
+    <li>✅ Ecossistema maduro e rico</li>
+    <li>✅ Escalabilidade futura</li>
+    <li>✅ Custo-benefício para MVP</li>
+</ul>
+
+<h3>Stack Detalhada</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Camada</th>
+            <th>Tecnologia</th>
+            <th>Justificativa</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Backend</strong></td>
+            <td>Node.js + NestJS</td>
+            <td>
+                • Experiência prévia (Teddy)<br>
+                • Ecossistema rico para IA/ML<br>
+                • Rápido para prototipar<br>
+                • TypeScript = type safety
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Mobile</strong></td>
+            <td>React Native + Expo</td>
+            <td>
+                • Aproveita conhecimento React<br>
+                • Deploy rápido (sem native)<br>
+                • Um código = iOS + Android<br>
+                • Comunidade ativa
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Banco Relacional</strong></td>
+            <td>PostgreSQL</td>
+            <td>
+                • Experiência prévia<br>
+                • JSONB para flexibilidade<br>
+                • Performance excelente<br>
+                • Gratuito (Supabase/Railway)
+            </td>
+        </tr>
+        <tr>
+            <td><strong>Cache/Filas</strong></td>
+            <td>Redis</td>
+            <td>
+                • Experiência prévia<br>
+                • Cache distribuído<br>
+                • Filas assíncronas (Bull)<br>
+                • Performance
+            </td>
+        </tr>
+        <tr>
+            <td><strong>ORM</strong></td>
+            <td>Prisma</td>
+            <td>
+                • Type-safe<br>
+                • Migrations automáticas<br>
+                • Excelente DX<br>
+                • Integração perfeita com NestJS
+            </td>
+        </tr>
+        <tr>
+            <td><strong>IA/OCR</strong></td>
+            <td>APIs Terceiros</td>
+            <td>
+                <strong>OCR:</strong> Google Cloud Vision ou Tesseract<br>
+                <strong>Voz:</strong> Whisper API (OpenAI)<br>
+                <strong>Classificação:</strong> GPT-4 ou Claude API
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>2.2 O Que Entra e Sai do MVP</h2>
+
+<h3>✅ ENTRA no MVP (8 semanas)</h3>
+
+<div class="success-box">
+    <h4>Features Críticas</h4>
+    <ul>
+        <li><strong>Autenticação completa</strong> (JWT + Refresh Token)</li>
+        <li><strong>CRUD de transações</strong> (manual, voz, foto)</li>
+        <li><strong>Múltiplas contas</strong> (cadastro e gestão)</li>
+        <li><strong>Classificação fiscal assistida</strong> (IA + edição manual)</li>
+        <li><strong>Visão consolidada</strong> (dashboard com totalizadores)</li>
+        <li><strong>Upload de documentos</strong> (OCR para extração)</li>
+        <li><strong>Entrada por voz</strong> (transcrição + NLP)</li>
+        <li><strong>Cadastro de patrimônio</strong> (bens básicos)</li>
+        <li><strong>Simulação IRPF básica</strong> (educativa)</li>
+    </ul>
+</div>
+
+<h3>❌ NÃO ENTRA no MVP (roadmap futuro)</h3>
+
+<div class="warning-box">
+    <h4>Decisões Conscientes de Exclusão</h4>
+    
+    <p><strong>1. Integração bancária via Open Finance</strong></p>
+    <ul>
+        <li>Complexidade: 3-4 semanas só nisso</li>
+        <li>Regulatório: precisa de certificação</li>
+        <li>Alternativa: entrada manual/foto/voz</li>
+    </ul>
+    
+    <p><strong>2. Multi-usuário / Família</strong></p>
+    <ul>
+        <li>Compartilhamento de contas</li>
+        <li>Permissões granulares</li>
+        <li>MVP = 1 usuário por conta</li>
+    </ul>
+    
+    <p><strong>3. Exportação completa de DIRPF</strong></p>
+    <ul>
+        <li>Gerar XML da Receita</li>
+        <li>Arriscado juridicamente</li>
+        <li>MVP = apenas simulação</li>
+    </ul>
+    
+    <p><strong>4. Painel contador (B2B)</strong></p>
+    <ul>
+        <li>White label</li>
+        <li>Multi-cliente</li>
+        <li>Fase 3+</li>
+    </ul>
+    
+    <p><strong>5. Importação bancária automática</strong></p>
+    <ul>
+        <li>Parsing de OFX/CSV complexos</li>
+        <li>MVP = upload manual simples</li>
+    </ul>
+    
+    <p><strong>6. App web completo</strong></p>
+    <ul>
+        <li>MVP = mobile only</li>
+        <li>Web = apenas landing page</li>
+    </ul>
+</div>
+
+<!-- ARQUITETURA -->
+
+<h1>3. Arquitetura do Sistema</h1>
+
+<h2>3.1 Visão Geral</h2>
+
+<div class="highlight-box">
+    <h4>🏗️ Padrão Arquitetural</h4>
+    <p><strong>Clean Architecture + Modular Monolith</strong></p>
+    <p>Começamos com um monolito modular bem estruturado que pode ser facilmente decomposto em microsserviços no futuro, se necessário.</p>
+</div>
+
+<h3>Camadas da Aplicação</h3>
+
+<pre>
+┌─────────────────────────────────────────┐
+│         CLIENTE (React Native)          │
+└─────────────────┬───────────────────────┘
+                  │ HTTPS/REST
+                  ▼
+┌─────────────────────────────────────────┐
+│         API GATEWAY (NestJS)            │
+│  • Rate Limiting                        │
+│  • Authentication (JWT)                 │
+│  • Request Validation                   │
+└─────────────────┬───────────────────────┘
+                  │
+    ┌─────────────┼─────────────┐
+    ▼             ▼             ▼
+┌─────────┐ ┌─────────┐ ┌─────────────┐
+│  Users  │ │ Accounts│ │Transactions │
+│ Module  │ │ Module  │ │   Module    │
+└────┬────┘ └────┬────┘ └──────┬──────┘
+     │           │              │
+     └───────────┼──────────────┘
+                 ▼
+┌─────────────────────────────────────────┐
+│      PROCESSING LAYER (Workers)         │
+│  • OCR Worker                           │
+│  • Voice-to-Text Worker                 │
+│  • Classification Worker                │
+└─────────────────┬───────────────────────┘
+                  │
+    ┌─────────────┼─────────────┐
+    ▼             ▼             ▼
+┌─────────┐ ┌─────────┐ ┌─────────┐
+│   PG    │ │  Redis  │ │   S3    │
+│Database │ │ Cache/  │ │ Storage │
+│         │ │ Queue   │ │         │
+└─────────┘ └─────────┘ └─────────┘
+</pre>
+
+<h3>Fluxo de Processamento Assíncrono</h3>
+
+<pre>
+1. User upload foto/áudio
+        ↓
+2. API recebe e valida
+        ↓
+3. Salva em Storage (S3)
+        ↓
+4. Enfileira Job (Redis/Bull)
+        ↓
+5. Worker processa em background
+        ↓
+6. Chama serviço externo (OCR/STT)
+        ↓
+7. Extrai dados estruturados
+        ↓
+8. Atualiza banco de dados
+        ↓
+9. Notifica usuário (status update)
+</pre>
+
+<h2>3.2 Módulos Principais</h2>
+
+<h3>Backend (NestJS)</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>Módulo</th>
+            <th>Responsabilidade</th>
+            <th>Dependências</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>AuthModule</strong></td>
+            <td>Autenticação JWT, registro, login, refresh token</td>
+            <td>UsersModule, JwtModule</td>
+        </tr>
+        <tr>
+            <td><strong>UsersModule</strong></td>
+            <td>CRUD de usuários, perfil, preferências</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td><strong>AccountsModule</strong></td>
+            <td>Gestão de contas bancárias, saldos</td>
+            <td>UsersModule</td>
+        </tr>
+        <tr>
+            <td><strong>TransactionsModule</strong></td>
+            <td>CRUD transações, filtros, agregações</td>
+            <td>AccountsModule</td>
+        </tr>
+        <tr>
+            <td><strong>AssetsModule</strong></td>
+            <td>Cadastro de patrimônio (imóveis, veículos)</td>
+            <td>UsersModule</td>
+        </tr>
+        <tr>
+            <td><strong>ProcessingModule</strong></td>
+            <td>Workers assíncronos (OCR, voz, classificação)</td>
+            <td>TransactionsModule, StorageModule</td>
+        </tr>
+        <tr>
+            <td><strong>SimulationsModule</strong></td>
+            <td>Cálculos de IRPF, cenários, projeções</td>
+            <td>TransactionsModule, AssetsModule</td>
+        </tr>
+        <tr>
+            <td><strong>StorageModule</strong></td>
+            <td>Upload de arquivos, gerenciamento S3</td>
+            <td>-</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- MODELO DE DADOS -->
+
+<h1>4. Modelo de Dados</h1>
+
+<h2>4.1 Entidades Principais</h2>
+
+<h3>User (Usuário)</h3>
+
+<pre>
+interface User {
+  id: string;              // UUID
+  email: string;           // UNIQUE
+  password_hash: string;   // bcrypt
+  name: string;
+  cpf?: string;            // ENCRYPTED
+  phone?: string;
+  
+  preferences: {
+    default_context: 'PF' | 'AUTONOMO';
+    notification_enabled: boolean;
+    theme: 'light' | 'dark';
+  };
+  
+  created_at: Date;
+  updated_at: Date;
+  last_login?: Date;
+}
+</pre>
+
+<h3>Account (Conta Bancária)</h3>
+
+<pre>
+interface Account {
+  id: string;
+  user_id: string;         // FK -> User
+  
+  name: string;            // "Nubank", "BB Corrente"
+  bank_name?: string;
+  account_type: 'CORRENTE' | 'POUPANCA' | 'INVESTIMENTO' | 'OUTRO';
+  
+  initial_balance: number; // Saldo ao cadastrar
+  current_balance: number; // Calculado
+  
+  is_active: boolean;
+  created_at: Date;
+  updated_at: Date;
+}
+</pre>
+
+<h3>Transaction (Transação)</h3>
+
+<pre>
+enum TransactionType {
+  CREDITO = 'CREDITO',
+  DEBITO = 'DEBITO'
+}
+
+enum FiscalType {
+  TRIBUTAVEL = 'TRIBUTAVEL',      // Salário, aluguel recebido
+  ISENTO = 'ISENTO',               // Rendimento poupança
+  DEDUTIVEL = 'DEDUTIVEL',         // Educação, saúde
+  NEUTRO = 'NEUTRO',               // Transferências internas
+  NAO_CLASSIFICADO = 'NAO_CLASSIFICADO'
+}
+
+enum InputSource {
+  MANUAL = 'MANUAL',
+  VOZ = 'VOZ',
+  FOTO = 'FOTO',
+  PDF = 'PDF',
+  CSV = 'CSV',
+  XML_NFE = 'XML_NFE'
+}
+
+interface Transaction {
+  id: string;
+  user_id: string;         // FK -> User
+  account_id: string;      // FK -> Account
+  
+  date: Date;
+  amount: number;          // Sempre positivo
+  type: TransactionType;
+  description: string;
+  category?: string;
+  
+  fiscal_type: FiscalType;
+  user_context: 'PF' | 'AUTONOMO';
+  
+  input_source: InputSource;
+  original_input?: string;  // Texto original
+  document_url?: string;    // URL do arquivo
+  
+  ai_confidence_score?: number;        // 0-1
+  ai_suggested_fiscal_type?: FiscalType;
+  user_confirmed: boolean;
+  
+  created_at: Date;
+  updated_at: Date;
+}
+</pre>
+
+<h3>Asset (Patrimônio)</h3>
+
+<pre>
+interface Asset {
+  id: string;
+  user_id: string;
+  
+  type: 'IMOVEL' | 'VEICULO' | 'INVESTIMENTO' | 'OUTRO';
+  name: string;
+  description?: string;
+  
+  acquisition_date: Date;
+  acquisition_value: number;
+  current_estimated_value: number;
+  
+  documents: string[];     // URLs
+  
+  created_at: Date;
+  updated_at: Date;
+}
+</pre>
+
+<h2>4.2 Relacionamentos</h2>
+
+<pre>
+User (1) ──────< (N) Account
+User (1) ──────< (N) Transaction
+User (1) ──────< (N) Asset
+Account (1) ────< (N) Transaction
+
+Cascade Delete:
+• User deletado → deleta Accounts, Transactions, Assets
+• Account deletado → deleta apenas suas Transactions
+</pre>
+
+<h2>4.3 Índices Críticos</h2>
+
+<div class="highlight-box">
+    <h4>🚀 Performance desde o dia 1</h4>
+    
+    <p><strong>users</strong></p>
+    <ul>
+        <li>UNIQUE INDEX: email</li>
+        <li>INDEX: cpf (encrypted)</li>
+    </ul>
+    
+    <p><strong>accounts</strong></p>
+    <ul>
+        <li>INDEX: (user_id, is_active)</li>
+        <li>INDEX: (user_id, created_at DESC)</li>
+    </ul>
+    
+    <p><strong>transactions</strong> (mais crítico)</p>
+    <ul>
+        <li>INDEX: (user_id, date DESC)</li>
+        <li>INDEX: (account_id, date DESC)</li>
+        <li>INDEX: (user_id, fiscal_type)</li>
+        <li>COMPOSITE: (user_id, date, account_id) → para agregações</li>
+    </ul>
+    
+    <p><strong>assets</strong></p>
+    <ul>
+        <li>INDEX: user_id</li>
+        <li>INDEX: (user_id, type)</li>
+    </ul>
+</div>
+
+<!-- ROADMAP -->
+
+<h1>6. Roadmap de Desenvolvimento - 8 Semanas</h1>
+
+<div class="highlight-box">
+    <h4>📅 Estratégia de Entrega</h4>
+    <p>Cada semana representa uma <strong>entrega funcional testável</strong>. Não avançamos para a próxima sem ter algo funcionando.</p>
+</div>
+
+<h2>6.1 Semana 1: Fundação + Auth</h2>
+<span class="badge badge-critical">CRÍTICO</span>
+
+<div class="timeline">
+    <div class="timeline-item">
+        <div class="week-title">Backend</div>
+        <ul>
+            <li>Setup NestJS + estrutura modular</li>
+            <li>PostgreSQL + Prisma ORM</li>
+            <li>Auth JWT + Refresh Token</li>
+            <li>Módulo de usuários (CRUD básico)</li>
+            <li>Middleware de autenticação</li>
+        </ul>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">Mobile</div>
+        <ul>
+            <li>Setup React Native + Expo</li>
+            <li>Navegação (React Navigation)</li>
+            <li>Telas: Login, Registro, Onboarding</li>
+            <li>Context API para auth</li>
+            <li>Integração com backend auth</li>
+        </ul>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">Infra</div>
+        <ul>
+            <li>Docker Compose (dev local)</li>
+            <li>Estrutura de variáveis de ambiente</li>
+            <li>Setup Redis básico</li>
+        </ul>
+    </div>
+</div>
+
+<div class="success-box">
+    <strong>✅ Entrega da Semana 1:</strong> Usuário consegue criar conta, fazer login e ver tela inicial.
+</div>
+
+<h2>6.2 Semana 2: Entrada Manual + Listagem</h2>
+<span class="badge badge-critical">CRÍTICO</span>
+
+<div class="timeline">
+    <div class="timeline-item">
+        <div class="week-title">Backend</div>
+        <ul>
+            <li>Modelo de Transações (schema Prisma)</li>
+            <li>CRUD de transações</li>
+            <li>Filtros e paginação</li>
+            <li>Agregações básicas (totais mensais)</li>
+            <li>Validações com class-validator</li>
+        </ul>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">Mobile</div>
+        <ul>
+            <li>Tela: Dashboard (visão mensal)</li>
+            <li>Tela: Lista de transações</li>
+            <li>Tela: Adicionar transação manual</li>
+            <li>Form com validação (react-hook-form)</li>
+            <li>Componentes: Card, List, Input</li>
+        </ul>
+    </div>
+</div>
+
+<div class="success-box">
+    <strong>✅ Entrega da Semana 2:</strong> Usuário adiciona transações manualmente e vê no dashboard.
+</div>
+
+<h2>6.3 Semana 3: Classificação Fiscal</h2>
+<span class="badge badge-critical">CRÍTICO</span>
+
+<div class="timeline">
+    <div class="timeline-item">
+        <div class="week-title">Backend</div>
+        <ul>
+            <li>Enum de tipos fiscais</li>
+            <li>Enum de contextos (PF, Autônomo)</li>
+            <li>Lógica de classificação assistida (regras básicas)</li>
+            <li>Endpoint: sugestão de classificação</li>
+            <li>Histórico de edições</li>
+        </ul>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">Mobile</div>
+        <ul>
+            <li>Tela: Detalhes da transação</li>
+            <li>Tela: Editar classificação</li>
+            <li>Seletor de tipo fiscal + contexto</li>
+            <li>Badges visuais por tipo</li>
+            <li>Confirmação de sugestões</li>
+        </ul>
+    </div>
+</div>
+
+<div class="success-box">
+    <strong>✅ Entrega da Semana 3:</strong> Sistema sugere classificação fiscal e usuário confirma/edita.
+</div>
+
+<h2>6.4 Semana 4: Upload de Documentos (OCR)</h2>
+<span class="badge badge-high">ALTO</span>
+
+<div class="timeline">
+    <div class="timeline-item">
+        <div class="week-title">Backend</div>
+        <ul>
+            <li>Upload de arquivos (Multer)</li>
+            <li>Storage: S3 ou local (MVP)</li>
+            <li>Fila assíncrona (Bull + Redis)</li>
+            <li>Job: Processar OCR</li>
+            <li>Integração Google Vision API</li>
+            <li>Extração de dados estruturados</li>
+        </ul>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">Mobile</div>
+        <ul>
+            <li>Camera integration (expo-camera)</li>
+            <li>Image picker (expo-image-picker)</li>
+            <li>Upload de fotos/PDFs</li>
+            <li>Loading states</li>
+            <li>Preview antes de enviar</li>
+        </ul>
+    </div>
+</div>
+
+<div class="success-box">
+    <strong>✅ Entrega da Semana 4:</strong> Usuário tira foto de nota fiscal e sistema extrai dados.
+</div>
+
+<h2>6.5 Semana 5: Entrada por Voz</h2>
+<span class="badge badge-high">ALTO</span>
+
+<div class="timeline">
+    <div class="timeline-item">
+        <div class="week-title">Backend</div>
+        <ul>
+            <li>Endpoint para upload de áudio</li>
+            <li>Integração Whisper API</li>
+            <li>Job: Transcrição de áudio</li>
+            <li>NLP para extração (GPT-4/regex)</li>
+            <li>Extração: valor, descrição, categoria</li>
+        </ul>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">Mobile</div>
+        <ul>
+            <li>Audio recorder (expo-av)</li>
+            <li>UI de gravação (timer, waveform)</li>
+            <li>Upload de áudio</li>
+            <li>Feedback visual do processamento</li>
+            <li>Confirmação da transação extraída</li>
+        </ul>
+    </div>
+</div>
+
+<div class="success-box">
+    <strong>✅ Entrega da Semana 5:</strong> Usuário grava áudio dizendo transação e sistema adiciona automaticamente.
+</div>
+
+<h2>6.6 Semana 6: Multi-Contas</h2>
+<span class="badge badge-high">ALTO</span>
+
+<div class="timeline">
+    <div class="timeline-item">
+        <div class="week-title">Backend</div>
+        <ul>
+            <li>Modelo: Contas (schema)</li>
+            <li>Relacionamento: Transação → Conta</li>
+            <li>Agregações por conta</li>
+            <li>Visão consolidada</li>
+            <li>Filtros por conta/período</li>
+        </ul>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">Mobile</div>
+        <ul>
+            <li>Tela: Gerenciar contas</li>
+            <li>Tela: Adicionar conta</li>
+            <li>Dashboard: seletor de contas</li>
+            <li>Gráficos básicos (react-native-chart-kit)</li>
+            <li>Totalizadores por conta</li>
+        </ul>
+    </div>
+</div>
+
+<div class="success-box">
+    <strong>✅ Entrega da Semana 6:</strong> Usuário gerencia múltiplas contas e vê consolidação.
+</div>
+
+<h2>6.7 Semana 7: Visão Patrimonial</h2>
+<span class="badge badge-medium">MÉDIO</span>
+
+<div class="timeline">
+    <div class="timeline-item">
+        <div class="week-title">Backend</div>
+        <ul>
+            <li>Modelo: Patrimônio (bens)</li>
+            <li>CRUD de patrimônio</li>
+            <li>Cálculo de variação patrimonial</li>
+        </ul>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">Mobile</div>
+        <ul>
+            <li>Tela: Lista de bens</li>
+            <li>Tela: Adicionar/Editar bem</li>
+            <li>Card com resumo patrimonial</li>
+            <li>Indicador de crescimento</li>
+        </ul>
+    </div>
+</div>
+
+<h2>6.8 Semana 8: Polish + Simulação IRPF</h2>
+<span class="badge badge-medium">MÉDIO</span>
+
+<div class="timeline">
+    <div class="timeline-item">
+        <div class="week-title">Backend</div>
+        <ul>
+            <li>Cálculo de IRPF estimado (regras 2025)</li>
+            <li>Endpoint: simulação</li>
+            <li>Disclaimers educativos</li>
+            <li>Testes unitários críticos</li>
+            <li>Documentação de API (Swagger)</li>
+        </ul>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">Mobile</div>
+        <ul>
+            <li>Tela: Simulação IRPF</li>
+            <li>Alertas e disclaimers</li>
+            <li>Onboarding melhorado</li>
+            <li>Polish geral de UI/UX</li>
+            <li>Tratamento de erros global</li>
+        </ul>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">Infra</div>
+        <ul>
+            <li>CI/CD básico (GitHub Actions)</li>
+            <li>Deploy em VPS ou Heroku</li>
+            <li>Monitoramento básico</li>
+        </ul>
+    </div>
+</div>
+
+<div class="success-box">
+    <strong>✅ Entrega Final:</strong> MVP completo, funcional e deployado.
+</div>
+
+<!-- SETUP E INSTALAÇÃO -->
+
+<h1>9. Setup e Instalação</h1>
+
+<h2>9.1 Pré-requisitos</h2>
+
+<div class="highlight-box">
+    <h4>🛠️ Ferramentas Necessárias</h4>
+    <ul>
+        <li><strong>Node.js</strong> v18+ (LTS)</li>
+        <li><strong>npm</strong> ou <strong>yarn</strong></li>
+        <li><strong>Docker</strong> + <strong>Docker Compose</strong></li>
+        <li><strong>Git</strong></li>
+        <li><strong>Visual Studio Code</strong> (recomendado)</li>
+        <li><strong>Expo CLI</strong> (para mobile)</li>
+        <li><strong>Expo Go</strong> app (para testar no celular)</li>
+    </ul>
+</div>
+
+<h3>Contas Necessárias</h3>
+
+<ul>
+    <li>Conta GitHub (versionamento)</li>
+    <li>Conta OpenAI (Whisper API + GPT)</li>
+    <li>Conta Google Cloud (Vision API para OCR)</li>
+    <li>Conta Supabase ou Railway (banco de dados gratuito)</li>
+</ul>
+
+<h2>9.2 Configuração Backend</h2>
+
+<h3>Passo 1: Instalar NestJS CLI</h3>
+
+<pre>
+npm install -g @nestjs/cli
+</pre>
+
+<h3>Passo 2: Criar projeto backend</h3>
+
+<pre>
+nest new backend
+cd backend
+</pre>
+
+<h3>Passo 3: Instalar dependências principais</h3>
+
+<pre>
+# Autenticação
+npm install @nestjs/jwt @nestjs/passport passport passport-jwt bcrypt
+npm install -D @types/bcrypt @types/passport-jwt
+
+# ORM e Banco
+npm install @prisma/client
+npm install -D prisma
+
+# Redis e Filas
+npm install @nestjs/bull bull ioredis
+npm install -D @types/bull
+
+# Validação
+npm install class-validator class-transformer
+
+# Upload de arquivos
+npm install @nestjs/platform-express multer
+npm install -D @types/multer
+
+# Configuração
+npm install @nestjs/config
+
+# AWS S3 (opcional)
+npm install @aws-sdk/client-s3
+</pre>
+
+<h3>Passo 4: Inicializar Prisma</h3>
+
+<pre>
+npx prisma init
+</pre>
+
+<h3>Passo 5: Configurar .env</h3>
+
+<pre>
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/fiscal_app"
+
+# JWT
+JWT_SECRET="your-super-secret-jwt-key-change-this"
+JWT_REFRESH_SECRET="your-refresh-secret-key"
+JWT_EXPIRATION="15m"
+JWT_REFRESH_EXPIRATION="7d"
+
+# Redis
+REDIS_HOST="localhost"
+REDIS_PORT=6379
+
+# OpenAI
+OPENAI_API_KEY="sk-..."
+
+# Google Cloud
+GOOGLE_CLOUD_API_KEY="..."
+GOOGLE_CLOUD_PROJECT_ID="..."
+
+# Storage
+STORAGE_TYPE="local" # ou "s3"
+UPLOAD_DIR="./uploads"
+
+# AWS S3 (se usar)
+AWS_ACCESS_KEY_ID="..."
+AWS_SECRET_ACCESS_KEY="..."
+AWS_BUCKET_NAME="..."
+AWS_REGION="us-east-1"
+</pre>
+
+<h3>Passo 6: Docker Compose para desenvolvimento local</h3>
+
+<p>Criar arquivo <code>docker-compose.yml</code> na raiz do backend:</p>
+
+<pre>
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: fiscal_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: fiscal_user
+      POSTGRES_PASSWORD: fiscal_pass
+      POSTGRES_DB: fiscal_app
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: fiscal_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  adminer:
+    image: adminer
+    container_name: fiscal_adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+
+volumes:
+  postgres_data:
+  redis_data:
+</pre>
+
+<h3>Passo 7: Subir infraestrutura</h3>
+
+<pre>
+docker-compose up -d
+</pre>
+
+<h3>Passo 8: Criar schema do Prisma</h3>
+
+<p>Editar <code>prisma/schema.prisma</code>:</p>
+
+<pre>
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String   @map("password_hash")
+  name          String
+  cpf           String?
+  phone         String?
+  preferences   Json     @default("{}")
+  
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  lastLogin     DateTime? @map("last_login")
+  
+  accounts      Account[]
+  transactions  Transaction[]
+  assets        Asset[]
+  
+  @@map("users")
+}
+
+model Account {
+  id              String   @id @default(uuid())
+  userId          String   @map("user_id")
+  
+  name            String
+  bankName        String?  @map("bank_name")
+  accountType     String   @map("account_type")
+  
+  initialBalance  Float    @map("initial_balance")
+  currentBalance  Float    @map("current_balance")
+  
+  isActive        Boolean  @default(true) @map("is_active")
+  
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+  
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions    Transaction[]
+  
+  @@index([userId, isActive])
+  @@map("accounts")
+}
+
+model Transaction {
+  id                      String   @id @default(uuid())
+  userId                  String   @map("user_id")
+  accountId               String   @map("account_id")
+  
+  date                    DateTime
+  amount                  Float
+  type                    String
+  description             String
+  category                String?
+  
+  fiscalType              String   @map("fiscal_type")
+  userContext             String   @map("user_context")
+  
+  inputSource             String   @map("input_source")
+  originalInput           String?  @map("original_input")
+  documentUrl             String?  @map("document_url")
+  
+  aiConfidenceScore       Float?   @map("ai_confidence_score")
+  aiSuggestedFiscalType   String?  @map("ai_suggested_fiscal_type")
+  userConfirmed           Boolean  @default(false) @map("user_confirmed")
+  
+  createdAt               DateTime @default(now()) @map("created_at")
+  updatedAt               DateTime @updatedAt @map("updated_at")
+  editedByUserAt          DateTime? @map("edited_by_user_at")
+  
+  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  account                 Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  
+  @@index([userId, date(sort: Desc)])
+  @@index([accountId, date(sort: Desc)])
+  @@index([userId, fiscalType])
+  @@index([userId, date, accountId])
+  @@map("transactions")
+}
+
+model Asset {
+  id                      String   @id @default(uuid())
+  userId                  String   @map("user_id")
+  
+  type                    String
+  name                    String
+  description             String?
+  
+  acquisitionDate         DateTime @map("acquisition_date")
+  acquisitionValue        Float    @map("acquisition_value")
+  currentEstimatedValue   Float    @map("current_estimated_value")
+  
+  documents               String[]
+  
+  createdAt               DateTime @default(now()) @map("created_at")
+  updatedAt               DateTime @updatedAt @map("updated_at")
+  
+  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([userId, type])
+  @@map("assets")
+}
+</pre>
+
+<h3>Passo 9: Rodar migrations</h3>
+
+<pre>
+npx prisma migrate dev --name init
+npx prisma generate
+</pre>
+
+<h3>Passo 10: Rodar o servidor</h3>
+
+<pre>
+npm run start:dev
+</pre>
+
+<p>O backend estará rodando em <code>http://localhost:3000</code></p>
+
+<h2>9.3 Configuração Mobile</h2>
+
+<h3>Passo 1: Criar projeto React Native com Expo</h3>
+
+<pre>
+npx create-expo-app mobile
+cd mobile
+</pre>
+
+<h3>Passo 2: Instalar dependências principais</h3>
+
+<pre>
+# Navegação
+npx expo install @react-navigation/native
+npx expo install @react-navigation/native-stack
+npx expo install @react-navigation/bottom-tabs
+npx expo install react-native-screens react-native-safe-area-context
+
+# HTTP
+npm install axios
+
+# Formulários
+npm install react-hook-form
+
+# Estado global
+npm install zustand
+# OU
+npm install @tanstack/react-query
+
+# Camera e mídia
+npx expo install expo-camera
+npx expo install expo-image-picker
+npx expo install expo-av
+
+# Outros
+npx expo install expo-secure-store  # Para armazenar tokens
+npm install date-fns  # Manipulação de datas
+</pre>
+
+<h3>Passo 3: Configurar variáveis de ambiente</h3>
+
+<p>Criar arquivo <code>.env</code>:</p>
+
+<pre>
+EXPO_PUBLIC_API_URL=http://localhost:3000
+# Para testar no celular, use o IP da sua máquina:
+# EXPO_PUBLIC_API_URL=http://192.168.1.100:3000
+</pre>
+
+<h3>Passo 4: Estrutura básica de pastas</h3>
+
+<pre>
+mobile/
+├── src/
+│   ├── navigation/
+│   ├── screens/
+│   ├── components/
+│   ├── services/
+│   ├── hooks/
+│   ├── context/
+│   ├── utils/
+│   └── types/
+├── assets/
+├── App.tsx
+└── package.json
+</pre>
+
+<h3>Passo 5: Rodar o app</h3>
+
+<pre>
+npx expo start
+</pre>
+
+<p>Escaneie o QR code com o app <strong>Expo Go</strong> no seu celular.</p>
+
+<h2>9.4 Checklist de Setup Completo</h2>
+
+<div class="success-box">
+    <h4>✅ Checklist</h4>
+    <ul>
+        <li>□ Node.js instalado</li>
+        <li>□ Docker rodando</li>
+        <li>□ PostgreSQL no Docker funcionando</li>
+        <li>□ Redis no Docker funcionando</li>
+        <li>□ Backend compilando sem erros</li>
+        <li>□ Prisma migrations executadas</li>
+        <li>□ Backend respondendo em localhost:3000</li>
+        <li>□ Mobile compilando sem erros</li>
+        <li>□ Mobile rodando no Expo Go</li>
+        <li>□ Variáveis de ambiente configuradas</li>
+        <li>□ Contas de APIs criadas (OpenAI, Google Cloud)</li>
+    </ul>
+</div>
+
+<!-- SEGURANÇA -->
+
+<h1>10. Segurança e Compliance</h1>
+
+<h2>10.1 Autenticação e Autorização</h2>
+
+<h3>JWT Strategy</h3>
+
+<ul>
+    <li><strong>Access Token</strong>: 15 minutos de validade</li>
+    <li><strong>Refresh Token</strong>: 7 dias de validade</li>
+    <li>Tokens armazenados no <code>SecureStore</code> no mobile</li>
+    <li>Renovação automática antes de expirar</li>
+</ul>
+
+<h3>Proteção de Rotas</h3>
+
+<pre>
+@Controller('transactions')
+@UseGuards(JwtAuthGuard)
+export class TransactionsController {
+  // Todas as rotas protegidas
+}
+</pre>
+
+<h3>Rate Limiting</h3>
+
+<ul>
+    <li>100 requisições por minuto por IP</li>
+    <li>10 tentativas de login por hora</li>
+    <li>Rate limit específico para endpoints de IA (mais restritivo)</li>
+</ul>
+
+<h2>10.2 LGPD e Proteção de Dados</h2>
+
+<div class="critical-box">
+    <h4>🔒 Dados Sensíveis</h4>
+    
+    <p><strong>CPF</strong></p>
+    <ul>
+        <li>Armazenado criptografado (AES-256)</li>
+        <li>Nunca enviado em logs</li>
+        <li>Só descriptografado quando necessário</li>
+    </ul>
+    
+    <p><strong>Senhas</strong></p>
+    <ul>
+        <li>Hash com bcrypt (salt rounds: 10)</li>
+        <li>Nunca armazenadas em texto plano</li>
+        <li>Nunca enviadas em logs ou respostas</li>
+    </ul>
+    
+    <p><strong>Dados Financeiros</strong></p>
+    <ul>
+        <li>Conexão HTTPS obrigatória</li>
+        <li>Backup criptografado</li>
+        <li>Logs sanitizados (sem valores)</li>
+    </ul>
+</div>
+
+<h3>Consentimento do Usuário</h3>
+
+<p>No registro, o usuário deve aceitar:</p>
+
+<ul>
+    <li><strong>Termos de Uso</strong></li>
+    <li><strong>Política de Privacidade</strong></li>
+    <li><strong>Consentimento LGPD</strong> para processamento de dados</li>
+</ul>
+
+<h3>Direitos do Usuário (LGPD)</h3>
+
+<ul>
+    <li>✅ Exportar todos os seus dados</li>
+    <li>✅ Deletar conta e todos os dados</li>
+    <li>✅ Corrigir informações</li>
+    <li>✅ Revogar consentimento</li>
+</ul>
+
+<h2>10.3 Disclaimers Jurídicos Obrigatórios</h2>
+
+<div class="warning-box">
+    <h4>⚖️ Disclaimers em TODAS as Simulações</h4>
+    
+    <p><strong>Texto obrigatório (não negociável):</strong></p>
+    
+    <blockquote style="border-left: 3px solid #ffc107; padding-left: 15px; font-style: italic; margin: 15px 0;">
+    "Este aplicativo NÃO substitui um contador ou consultor tributário. As simulações são educativas e podem não refletir sua situação fiscal real. Sempre consulte um profissional antes de tomar decisões tributárias. Este app NÃO executa declarações nem garante isenção de tributos."
+    </blockquote>
+    
+    <p><strong>Onde exibir:</strong></p>
+    <ul>
+        <li>Tela de simulação IRPF</li>
+        <li>Tela de classificação fiscal</li>
+        <li>Primeiro acesso (onboarding)</li>
+        <li>Rodapé de relatórios</li>
+    </ul>
+</div>
+
+<!-- CUSTOS -->
+
+<h1>11. Custos e Infraestrutura</h1>
+
+<h2>11.1 Estimativa de Custos (MVP - 2 meses)</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Serviço</th>
+            <th>Custo Mensal</th>
+            <th>Observação</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Servidor Backend</strong></td>
+            <td>DigitalOcean Droplet<br>(2 GB RAM, 1 vCPU)</td>
+            <td>R$ 60</td>
+            <td>Ou Heroku Hobby: $7/mês</td>
+        </tr>
+        <tr>
+            <td><strong>Banco de Dados</strong></td>
+            <td>Supabase (Free tier)<br>ou Railway (Free tier)</td>
+            <td>R$ 0-50</td>
+            <td>Free até 500 MB</td>
+        </tr>
+        <tr>
+            <td><strong>Redis</strong></td>
+            <td>Redis Cloud (30 MB free)<br>ou Upstash</td>
+            <td>R$ 0</td>
+            <td>Free tier suficiente para MVP</td>
+        </tr>
+        <tr>
+            <td><strong>Storage (Arquivos)</strong></td>
+            <td>AWS S3</td>
+            <td>R$ 10-30</td>
+            <td>~5 GB de arquivos</td>
+        </tr>
+        <tr>
+            <td><strong>OpenAI API</strong></td>
+            <td>Whisper + GPT-4</td>
+            <td>R$ 100-200</td>
+            <td>Depende do uso</td>
+        </tr>
+        <tr>
+            <td><strong>Google Cloud Vision</strong></td>
+            <td>OCR API</td>
+            <td>R$ 50-100</td>
+            <td>1000 imagens grátis/mês</td>
+        </tr>
+        <tr>
+            <td><strong>Domínio</strong></td>
+            <td>Registro.br</td>
+            <td>R$ 40/ano</td>
+            <td>~R$ 3/mês</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="2"><strong>TOTAL ESTIMADO</strong></td>
+            <td><strong>R$ 223-443</strong></td>
+            <td>Por mês durante MVP</td>
+        </tr>
+    </tfoot>
+</table>
+
+<h3>Otimizações de Custo Pós-MVP</h3>
+
+<ul>
+    <li><strong>Classificação IA</strong>: Treinar modelo próprio (elimina custo de API)</li>
+    <li><strong>OCR</strong>: Usar Tesseract local (elimina custo Google)</li>
+    <li><strong>Cache agressivo</strong>: Reduzir chamadas de API</li>
+    <li><strong>Batch processing</strong>: Agrupar requisições</li>
+</ul>
+
+<h2>11.2 Infraestrutura de Produção</h2>
+
+<h3>Opção 1: Heroku (Mais Simples)</h3>
+
+<pre>
+# Deploy backend
+heroku create fiscal-app-api
+git push heroku main
+
+# Adicionar addons
+heroku addons:create heroku-postgresql:mini
+heroku addons:create heroku-redis:mini
+
+# Configurar env vars
+heroku config:set JWT_SECRET=...
+heroku config:set OPENAI_API_KEY=...
+</pre>
+
+<h3>Opção 2: DigitalOcean (Mais Controle)</h3>
+
+<pre>
+# Criar Droplet Ubuntu 22.04
+# Instalar Docker
+# Deploy via Docker Compose
+# Configurar Nginx como reverse proxy
+# SSL com Let's Encrypt (certbot)
+</pre>
+
+<h3>CI/CD com GitHub Actions</h3>
+
+<p>Criar <code>.github/workflows/deploy.yml</code>:</p>
+
+<pre>
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run tests
+        run: npm test
+      
+      - name: Build
+        run: npm run build
+      
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "fiscal-app-api"
+          heroku_email: "your@email.com"
+</pre>
+
+<!-- PRÓXIMOS PASSOS -->
+
+<h1>12. Próximos Passos Imediatos</h1>
+
+<h2>12.1 Semana 0 (Preparação)</h2>
+
+<div class="timeline">
+    <div class="timeline-item">
+        <div class="week-title">Dia 1-2: Setup Inicial</div>
+        <ul>
+            <li>Instalar todas as ferramentas (Node, Docker, etc)</li>
+            <li>Criar repositórios no GitHub</li>
+            <li>Setup backend (NestJS)</li>
+            <li>Setup mobile (Expo)</li>
+            <li>Docker Compose funcionando</li>
+        </ul>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">Dia 3-4: Contas e APIs</div>
+        <ul>
+            <li>Criar conta OpenAI e gerar API key</li>
+            <li>Criar projeto Google Cloud e ativar Vision API</li>
+            <li>Criar conta Supabase ou Railway</li>
+            <li>Testar conexões com APIs</li>
+        </ul>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">Dia 5-7: Documentação e Planejamento</div>
+        <ul>
+            <li>Quebrar semana 1 em tasks menores</li>
+            <li>Criar quadro Kanban (GitHub Projects ou Trello)</li>
+            <li>Ler documentação das tecnologias</li>
+            <li>Preparar ambiente de desenvolvimento</li>
+        </ul>
+    </div>
+</div>
+
+<h2>12.2 Primeira Tarefa Concreta</h2>
+
+<div class="success-box">
+    <h4>🎯 Sua primeira entrega (Semana 1 - Dia 1)</h4>
+    
+    <p><strong>Goal:</strong> API respondendo "Hello World" autenticada</p>
+    
+    <p><strong>Tarefas:</strong></p>
+    <ol>
+        <li>Criar módulo <code>AuthModule</code></li>
+        <li>Criar endpoint <code>POST /auth/register</code></li>
+        <li>Criar endpoint <code>POST /auth/login</code></li>
+        <li>Implementar JWT Strategy</li>
+        <li>Testar com Postman/Insomnia</li>
+    </ol>
+    
+    <p><strong>Critério de sucesso:</strong></p>
+    <ul>
+        <li>✅ Consigo criar um usuário</li>
+        <li>✅ Consigo fazer login</li>
+        <li>✅ Recebo um token JWT válido</li>
+        <li>✅ Consigo acessar rota protegida com o token</li>
+    </ul>
+</div>
+
+<h2>12.3 Métricas de Sucesso do MVP</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Métrica</th>
+            <th>Meta MVP</th>
+            <th>Como Medir</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Taxa de conclusão do onboarding</strong></td>
+            <td>&gt; 70%</td>
+            <td>Analytics (Firebase/Mixpanel)</td>
+        </tr>
+        <tr>
+            <td><strong>Tempo médio de primeira transação</strong></td>
+            <td>&lt; 3 minutos</td>
+            <td>Timestamp primeira transação - registro</td>
+        </tr>
+        <tr>
+            <td><strong>Taxa de edição após IA</strong></td>
+            <td>&lt; 30%</td>
+            <td>user_confirmed flag</td>
+        </tr>
+        <tr>
+            <td><strong>Retenção D7</strong></td>
+            <td>&gt; 40%</td>
+            <td>Usuários ativos após 7 dias</td>
+        </tr>
+        <tr>
+            <td><strong>NPS</strong></td>
+            <td>&gt; 50</td>
+            <td>Pesquisa in-app</td>
+        </tr>
+        <tr>
+            <td><strong>Transações por usuário/mês</strong></td>
+            <td>&gt; 20</td>
+            <td>Média de transações</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- USER JOURNEYS DETALHADOS -->
+
+<h1>7. User Journeys Detalhados</h1>
+
+<h2>7.1 Journey: Onboarding Completo</h2>
+
+<h3>Contexto</h3>
+<p>Usuário novo descobre o app e quer entender como funciona.</p>
+
+<h3>Fluxo Passo a Passo</h3>
+
+<div class="timeline">
+    <div class="timeline-item">
+        <div class="week-title">1. Splash Screen</div>
+        <p>Logo do app + animação de carregamento (2 segundos)</p>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">2. Welcome Slides (3 telas)</div>
+        <ul>
+            <li><strong>Slide 1:</strong> "A Receita já sabe. Você também deveria."</li>
+            <li><strong>Slide 2:</strong> "Consolide suas contas. Classifique automaticamente."</li>
+            <li><strong>Slide 3:</strong> "Voz, foto ou manual. Você escolhe."</li>
+        </ul>
+        <p>Botões: "Próximo" | "Pular" | "Já tenho conta"</p>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">3. Tela de Cadastro</div>
+        <ul>
+            <li>Input: Nome completo</li>
+            <li>Input: Email</li>
+            <li>Input: Senha (mínimo 8 caracteres)</li>
+            <li>Input: Confirmar senha</li>
+            <li>Checkbox: "Li e aceito os Termos de Uso e Política de Privacidade"</li>
+        </ul>
+        <p>Validações em tempo real. Botão: "Criar conta"</p>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">4. Pergunta: Contexto do Usuário</div>
+        <p>"Como você se identifica?"</p>
+        <ul>
+            <li>○ Pessoa física</li>
+            <li>○ Autônomo / Profissional liberal</li>
+        </ul>
+        <p>Info: Isso ajuda a personalizar as classificações fiscais.</p>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">5. Adicionar Primeira Conta</div>
+        <p>"Vamos cadastrar sua conta bancária principal"</p>
+        <ul>
+            <li>Input: Nome da conta (ex: "Nubank")</li>
+            <li>Dropdown: Banco (ou texto livre)</li>
+            <li>Radio: Tipo (Corrente / Poupança / Investimento)</li>
+            <li>Input: Saldo atual (R$)</li>
+        </ul>
+        <p>Disclaimer: "Ainda não conectamos ao banco. Tudo é manual."</p>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">6. Dashboard Inicial</div>
+        <p>Card de boas-vindas com tutorial interativo:</p>
+        <ul>
+            <li>"👋 Olá, [Nome]! Vamos adicionar sua primeira transação?"</li>
+            <li>3 botões grandes: 🎤 Voz | 📸 Foto | ✍️ Manual</li>
+        </ul>
+    </div>
+</div>
+
+<div class="success-box">
+    <strong>✅ Sucesso:</strong> Usuário tem conta criada, contexto definido, primeira conta cadastrada e está no dashboard.
+</div>
+
+<h2>7.2 Journey: Adicionar Transação por Voz</h2>
+
+<div class="timeline">
+    <div class="timeline-item">
+        <div class="week-title">1. Iniciar Gravação</div>
+        <p>Usuário clica no botão "Por voz"</p>
+        <p>Solicita permissão de microfone (primeira vez)</p>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">2. Gravando</div>
+        <ul>
+            <li>Animação de waveform (visualização de áudio)</li>
+            <li>Timer: "00:05"</li>
+            <li>Texto de exemplo: "Diga algo como: 'Recebi 1500 reais de aluguel dia 10'"</li>
+            <li>Botão: "Parar" (pulsando)</li>
+            <li>Botão: "Cancelar"</li>
+        </ul>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">3. Processando</div>
+        <p>Loading animado com steps:</p>
+        <ul>
+            <li>✓ Áudio recebido</li>
+            <li>⏳ Transcrevendo...</li>
+            <li>⏳ Extraindo informações...</li>
+            <li>⏳ Classificando...</li>
+        </ul>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">4. Confirmação</div>
+        <p>Card com dados extraídos:</p>
+        <ul>
+            <li>📝 Transcrição: "recebi mil e quinhentos reais de aluguel dia dez"</li>
+            <li>💰 Valor: R$ 1.500,00</li>
+            <li>📅 Data: 10/01/2026</li>
+            <li>📊 Tipo: Entrada</li>
+            <li>🏷️ Descrição: "Aluguel recebido"</li>
+            <li>🏦 Conta: (dropdown pré-selecionado)</li>
+            <li>Badge: "Tributável (92% confiança)"</li>
+        </ul>
+        <p>"Está correto?"</p>
+        <p>Botões: "Sim, salvar" | "Editar" | "Refazer"</p>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">5. Sucesso</div>
+        <p>Animação de check verde</p>
+        <p>"Transação adicionada!"</p>
+        <p>Retorna ao dashboard com atualização visível</p>
+    </div>
+</div>
+
+<h2>7.3 Journey: Upload de Nota Fiscal (Foto)</h2>
+
+<div class="timeline">
+    <div class="timeline-item">
+        <div class="week-title">1. Abrir Câmera</div>
+        <p>Usuário clica "Tirar foto"</p>
+        <p>Solicita permissão de câmera (primeira vez)</p>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">2. Capturar</div>
+        <ul>
+            <li>Preview da câmera</li>
+            <li>Dicas: "Posicione a nota de forma legível"</li>
+            <li>Guia visual (retângulo)</li>
+            <li>Botões: Flash | Galeria | Capturar</li>
+        </ul>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">3. Preview</div>
+        <p>Mostra foto tirada</p>
+        <p>Botões: "Usar esta" | "Tirar outra"</p>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">4. Processando OCR</div>
+        <p>Loading com etapas:</p>
+        <ul>
+            <li>✓ Upload completo</li>
+            <li>⏳ Extraindo texto...</li>
+            <li>⏳ Identificando campos...</li>
+            <li>⏳ Classificando...</li>
+        </ul>
+    </div>
+    
+    <div class="timeline-item">
+        <div class="week-title">5. Dados Extraídos</div>
+        <p>Card com:</p>
+        <ul>
+            <li>Miniatura da foto (clicável)</li>
+            <li>🏪 Estabelecimento: "Clínica Odontológica Silva"</li>
+            <li>💰 Valor: R$ 350,00</li>
+            <li>📅 Data: 08/01/2026</li>
+            <li>📄 NF: 12345</li>
+            <li>🏷️ Categoria: "Saúde"</li>
+            <li>Badge: "Dedutível (88%)"</li>
+        </ul>
+        <p>Info: "Despesas com saúde são dedutíveis no IRPF"</p>
+        <p>Tudo editável. Botão: "Confirmar e salvar"</p>
+    </div>
+</div>
+
+<!-- ESTRUTURA COMPLETA -->
+
+<h1>8. Estrutura Completa do Projeto</h1>
+
+<h2>8.1 Backend - Estrutura Detalhada</h2>
+
+<pre>
+backend/
+│
+├── src/
+│   ├── main.ts
+│   ├── app.module.ts
+│   │
+│   ├── common/
+│   │   ├── decorators/
+│   │   │   ├── current-user.decorator.ts
+│   │   │   └── public.decorator.ts
+│   │   ├── guards/
+│   │   │   ├── jwt-auth.guard.ts
+│   │   │   └── roles.guard.ts
+│   │   ├── interceptors/
+│   │   │   ├── logging.interceptor.ts
+│   │   │   └── transform.interceptor.ts
+│   │   ├── filters/
+│   │   │   └── http-exception.filter.ts
+│   │   └── pipes/
+│   │       └── validation.pipe.ts
+│   │
+│   ├── config/
+│   │   ├── database.config.ts
+│   │   ├── redis.config.ts
+│   │   ├── jwt.config.ts
+│   │   ├── storage.config.ts
+│   │   └── openai.config.ts
+│   │
+│   ├── modules/
+│   │   ├── auth/
+│   │   │   ├── auth.module.ts
+│   │   │   ├── auth.controller.ts
+│   │   │   ├── auth.service.ts
+│   │   │   ├── strategies/
+│   │   │   │   ├── jwt.strategy.ts
+│   │   │   │   └── jwt-refresh.strategy.ts
+│   │   │   └── dto/
+│   │   │       ├── login.dto.ts
+│   │   │       ├── register.dto.ts
+│   │   │       └── refresh-token.dto.ts
+│   │   │
+│   │   ├── users/
+│   │   │   ├── users.module.ts
+│   │   │   ├── users.controller.ts
+│   │   │   ├── users.service.ts
+│   │   │   ├── entities/
+│   │   │   │   └── user.entity.ts
+│   │   │   └── dto/
+│   │   │       ├── create-user.dto.ts
+│   │   │       ├── update-user.dto.ts
+│   │   │       └── update-preferences.dto.ts
+│   │   │
+│   │   ├── accounts/
+│   │   │   ├── accounts.module.ts
+│   │   │   ├── accounts.controller.ts
+│   │   │   ├── accounts.service.ts
+│   │   │   ├── entities/
+│   │   │   │   └── account.entity.ts
+│   │   │   └── dto/
+│   │   │       ├── create-account.dto.ts
+│   │   │       └── update-account.dto.ts
+│   │   │
+│   │   ├── transactions/
+│   │   │   ├── transactions.module.ts
+│   │   │   ├── transactions.controller.ts
+│   │   │   ├── transactions.service.ts
+│   │   │   ├── entities/
+│   │   │   │   └── transaction.entity.ts
+│   │   │   ├── dto/
+│   │   │   │   ├── create-transaction.dto.ts
+│   │   │   │   ├── update-transaction.dto.ts
+│   │   │   │   ├── filter-transaction.dto.ts
+│   │   │   │   └── aggregate-transaction.dto.ts
+│   │   │   └── enums/
+│   │   │       ├── transaction-type.enum.ts
+│   │   │       ├── fiscal-type.enum.ts
+│   │   │       ├── user-context.enum.ts
+│   │   │       └── input-source.enum.ts
+│   │   │
+│   │   ├── assets/
+│   │   │   ├── assets.module.ts
+│   │   │   ├── assets.controller.ts
+│   │   │   ├── assets.service.ts
+│   │   │   └── ...
+│   │   │
+│   │   ├── simulations/
+│   │   │   ├── simulations.module.ts
+│   │   │   ├── simulations.controller.ts
+│   │   │   ├── simulations.service.ts
+│   │   │   └── calculators/
+│   │   │       └── irpf-calculator.service.ts
+│   │   │
+│   │   ├── processing/
+│   │   │   ├── processing.module.ts
+│   │   │   ├── processors/
+│   │   │   │   ├── ocr.processor.ts
+│   │   │   │   ├── voice.processor.ts
+│   │   │   │   └── classification.processor.ts
+│   │   │   └── services/
+│   │   │       ├── ocr.service.ts
+│   │   │       ├── speech-to-text.service.ts
+│   │   │       ├── ai-classification.service.ts
+│   │   │       └── google-vision.service.ts
+│   │   │
+│   │   └── storage/
+│   │       ├── storage.module.ts
+│   │       ├── storage.controller.ts
+│   │       └── storage.service.ts
+│   │
+│   └── prisma/
+│       └── prisma.service.ts
+│
+├── prisma/
+│   ├── schema.prisma
+│   ├── migrations/
+│   └── seed.ts
+│
+├── test/
+├── .env.example
+├── docker-compose.yml
+├── Dockerfile
+└── package.json
+</pre>
+
+<h2>8.2 Mobile - Estrutura Detalhada</h2>
+
+<pre>
+mobile/
+│
+├── src/
+│   ├── App.tsx
+│   │
+│   ├── navigation/
+│   │   ├── AppNavigator.tsx
+│   │   ├── AuthNavigator.tsx
+│   │   └── MainNavigator.tsx
+│   │
+│   ├── screens/
+│   │   ├── auth/
+│   │   │   ├── LoginScreen.tsx
+│   │   │   ├── RegisterScreen.tsx
+│   │   │   └── OnboardingScreen.tsx
+│   │   │
+│   │   ├── dashboard/
+│   │   │   ├── DashboardScreen.tsx
+│   │   │   └── components/
+│   │   │       ├── SummaryCard.tsx
+│   │   │       ├── MonthSelector.tsx
+│   │   │       └── QuickActions.tsx
+│   │   │
+│   │   ├── transactions/
+│   │   │   ├── TransactionListScreen.tsx
+│   │   │   ├── TransactionDetailScreen.tsx
+│   │   │   ├── AddTransactionScreen.tsx
+│   │   │   ├── ClassifyScreen.tsx
+│   │   │   └── components/
+│   │   │       ├── TransactionCard.tsx
+│   │   │       ├── FiscalTypeBadge.tsx
+│   │   │       └── FilterModal.tsx
+│   │   │
+│   │   ├── input/
+│   │   │   ├── VoiceInputScreen.tsx
+│   │   │   ├── PhotoInputScreen.tsx
+│   │   │   ├── ManualInputScreen.tsx
+│   │   │   └── components/
+│   │   │       ├── AudioRecorder.tsx
+│   │   │       ├── CameraView.tsx
+│   │   │       └── ProcessingModal.tsx
+│   │   │
+│   │   ├── accounts/
+│   │   │   ├── AccountsScreen.tsx
+│   │   │   ├── AddAccountScreen.tsx
+│   │   │   └── EditAccountScreen.tsx
+│   │   │
+│   │   ├── assets/
+│   │   │   ├── AssetsScreen.tsx
+│   │   │   └── AddAssetScreen.tsx
+│   │   │
+│   │   ├── simulations/
+│   │   │   └── IRPFSimulationScreen.tsx
+│   │   │
+│   │   └── profile/
+│   │       ├── ProfileScreen.tsx
+│   │       └── SettingsScreen.tsx
+│   │
+│   ├── components/
+│   │   ├── common/
+│   │   │   ├── Button.tsx
+│   │   │   ├── Input.tsx
+│   │   │   ├── Card.tsx
+│   │   │   ├── Badge.tsx
+│   │   │   ├── Loading.tsx
+│   │   │   ├── EmptyState.tsx
+│   │   │   └── ErrorBoundary.tsx
+│   │   │
+│   │   ├── forms/
+│   │   │   ├── DatePicker.tsx
+│   │   │   ├── CurrencyInput.tsx
+│   │   │   ├── Dropdown.tsx
+│   │   │   └── RadioGroup.tsx
+│   │   │
+│   │   └── charts/
+│   │       ├── BarChart.tsx
+│   │       └── PieChart.tsx
+│   │
+│   ├── services/
+│   │   ├── api.ts
+│   │   ├── auth.service.ts
+│   │   ├── transactions.service.ts
+│   │   ├── accounts.service.ts
+│   │   ├── assets.service.ts
+│   │   └── storage.service.ts
+│   │
+│   ├── hooks/
+│   │   ├── useAuth.ts
+│   │   ├── useTransactions.ts
+│   │   ├── useAccounts.ts
+│   │   ├── useVoiceRecorder.ts
+│   │   ├── useCamera.ts
+│   │   └── useDebounce.ts
+│   │
+│   ├── context/
+│   │   ├── AuthContext.tsx
+│   │   ├── ThemeContext.tsx
+│   │   └── AppContext.tsx
+│   │
+│   ├── utils/
+│   │   ├── formatters.ts
+│   │   ├── validators.ts
+│   │   ├── constants.ts
+│   │   ├── helpers.ts
+│   │   └── dates.ts
+│   │
+│   ├── types/
+│   │   ├── transaction.types.ts
+│   │   ├── account
