@@ -1,4 +1,12 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Account } from '../../../accounts/infra/entities/account.entity';
 
 @Entity('users')
 export class User {
@@ -14,13 +22,17 @@ export class User {
   @Column()
   name: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'varchar', length: 14 })
   cpf: string | null;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'varchar', length: 20 })
   phone: string | null;
 
-  @Column({ type: 'jsonb', default: () => `'{"default_context":"PF","notification_enabled":true,"theme":"light"}'` })
+  @Column({
+    type: 'jsonb',
+    default: () =>
+      `'{"default_context":"PF","notification_enabled":true,"theme":"light"}'`,
+  })
   preferences: Record<string, unknown>;
 
   @CreateDateColumn({ name: 'created_at' })
@@ -31,5 +43,7 @@ export class User {
 
   @Column({ name: 'last_login', type: 'timestamp', nullable: true })
   lastLogin: Date | null;
-}
 
+  @OneToMany(() => Account, (account) => account.user)
+  accounts: Account[];
+}
