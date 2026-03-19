@@ -29,7 +29,10 @@ export class TransactionsController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new transaction (Income/Expense)' })
-  @ApiResponse({ status: 201, description: 'Transaction created successfully.' })
+  @ApiResponse({
+    status: 201,
+    description: 'Transaction created successfully.',
+  })
   @ApiResponse({ status: 404, description: 'Account not found.' })
   async create(
     @CurrentUser() user: { userId: string },

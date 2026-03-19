@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import type ms from 'ms';
 import { User } from '../../../users/infra/entities/user.entity';
 import { UserService } from '../../../users/application/services/user.service';
 
@@ -118,11 +119,11 @@ export class AuthService {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
         secret: this.getAccessTokenSecret(),
-        expiresIn: this.getAccessTokenExpiresIn() as any,
+        expiresIn: this.getAccessTokenExpiresIn(),
       }),
       this.jwtService.signAsync(payload, {
         secret: this.getRefreshTokenSecret(),
-        expiresIn: this.getRefreshTokenExpiresIn() as any,
+        expiresIn: this.getRefreshTokenExpiresIn(),
       }),
     ]);
 
@@ -140,11 +141,12 @@ export class AuthService {
     return process.env.JWT_REFRESH_TOKEN_SECRET ?? 'default_jwt_refresh_secret';
   }
 
-  private getAccessTokenExpiresIn(): string {
-    return process.env.JWT_ACCESS_TOKEN_EXPIRES_IN ?? '3600s';
+  private getAccessTokenExpiresIn(): ms.StringValue {
+    return (process.env.JWT_ACCESS_TOKEN_EXPIRES_IN ??
+      '3600s') as ms.StringValue;
   }
 
-  private getRefreshTokenExpiresIn(): string {
-    return process.env.JWT_REFRESH_TOKEN_EXPIRES_IN ?? '7d';
+  private getRefreshTokenExpiresIn(): ms.StringValue {
+    return (process.env.JWT_REFRESH_TOKEN_EXPIRES_IN ?? '7d') as ms.StringValue;
   }
 }

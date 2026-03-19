@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { Account } from '../../../accounts/infra/entities/account.entity';
@@ -24,7 +20,10 @@ export class TransactionsService {
     private readonly dataSource: DataSource,
   ) {}
 
-  async create(userId: string, dto: CreateTransactionDto): Promise<Transaction> {
+  async create(
+    userId: string,
+    dto: CreateTransactionDto,
+  ): Promise<Transaction> {
     return this.dataSource.transaction(async (manager) => {
       // 1. Validar e buscar a conta
       const account = await manager.findOne(Account, {
@@ -32,7 +31,9 @@ export class TransactionsService {
       });
 
       if (!account) {
-        throw new NotFoundException('Account not found or does not belong to user');
+        throw new NotFoundException(
+          'Account not found or does not belong to user',
+        );
       }
 
       // 2. Criar a transação
@@ -95,12 +96,12 @@ export class TransactionsService {
       }
 
       const oldAccount = existingTransaction.account;
-      
+
       // Se estiver mudando de conta, precisamos validar a nova conta
       let newAccount = oldAccount;
       if (dto.accountId && dto.accountId !== oldAccount.id) {
         const foundAccount = await manager.findOne(Account, {
-            where: { id: dto.accountId, userId }
+          where: { id: dto.accountId, userId },
         });
         if (!foundAccount) throw new NotFoundException('New account not found');
         newAccount = foundAccount;
@@ -110,44 +111,55 @@ export class TransactionsService {
       if (existingTransaction.status === TransactionStatus.COMPLETED) {
         const oldAmount = Number(existingTransaction.amount);
         if (existingTransaction.type === TransactionType.INCOME) {
-          oldAccount.currentBalance = Number(oldAccount.currentBalance) - oldAmount;
+          oldAccount.currentBalance =
+            Number(oldAccount.currentBalance) - oldAmount;
         } else {
-          oldAccount.currentBalance = Number(oldAccount.currentBalance) + oldAmount;
+          oldAccount.currentBalance =
+            Number(oldAccount.currentBalance) + oldAmount;
         }
         // Se a conta não mudou, newAccount já está atualizado na memória se for a mesma ref?
         // Cuidado com referências. Se for a mesma conta, oldAccount === newAccount.
         // Se mudou a conta, salvamos a oldAccount agora.
         if (oldAccount.id !== newAccount.id) {
-           await manager.save(Account, oldAccount);
+          await manager.save(Account, oldAccount);
         }
       }
 
       // 3. Merge dos dados novos
-      const updatedTransaction = manager.merge(Transaction, existingTransaction, dto);
-      
+      const updatedTransaction = manager.merge(
+        Transaction,
+        existingTransaction,
+        dto,
+      );
+
       // Se mudou a conta, associa a nova entidade conta (para salvar no DB a FK)
       if (dto.accountId) {
-          updatedTransaction.account = newAccount;
-          updatedTransaction.accountId = newAccount.id;
+        updatedTransaction.account = newAccount;
+        updatedTransaction.accountId = newAccount.id;
       }
 
       // 4. Aplicar novo saldo na conta (nova ou mesma) se COMPLETED
       if (updatedTransaction.status === TransactionStatus.COMPLETED) {
-         // Nota: se a conta for a mesma, newAccount já tem o saldo revertido do passo 2?
-         // Sim, se oldAccount === newAccount (mesma referência de objeto), o JS mantém.
-         // Se não for a mesma referência, temos que garantir.
-         // O findOne lá em cima retornou existingTransaction.account.
-         
-         const amount = Number(updatedTransaction.amount);
-         if (updatedTransaction.type === TransactionType.INCOME) {
-            newAccount.currentBalance = Number(newAccount.currentBalance) + amount;
-         } else {
-            newAccount.currentBalance = Number(newAccount.currentBalance) - amount;
-         }
-         await manager.save(Account, newAccount);
-      } else if (oldAccount.id === newAccount.id && existingTransaction.status === TransactionStatus.COMPLETED) {
-         // Se mudou de COMPLETED para PENDING na MESMA conta, já revertemos lá em cima e salvamos aqui.
-         await manager.save(Account, newAccount);
+        // Nota: se a conta for a mesma, newAccount já tem o saldo revertido do passo 2?
+        // Sim, se oldAccount === newAccount (mesma referência de objeto), o JS mantém.
+        // Se não for a mesma referência, temos que garantir.
+        // O findOne lá em cima retornou existingTransaction.account.
+
+        const amount = Number(updatedTransaction.amount);
+        if (updatedTransaction.type === TransactionType.INCOME) {
+          newAccount.currentBalance =
+            Number(newAccount.currentBalance) + amount;
+        } else {
+          newAccount.currentBalance =
+            Number(newAccount.currentBalance) - amount;
+        }
+        await manager.save(Account, newAccount);
+      } else if (
+        oldAccount.id === newAccount.id &&
+        existingTransaction.status === TransactionStatus.COMPLETED
+      ) {
+        // Se mudou de COMPLETED para PENDING na MESMA conta, já revertemos lá em cima e salvamos aqui.
+        await manager.save(Account, newAccount);
       }
 
       return manager.save(Transaction, updatedTransaction);
@@ -169,7 +181,7 @@ export class TransactionsService {
       if (transaction.status === TransactionStatus.COMPLETED) {
         const account = transaction.account;
         const amount = Number(transaction.amount);
-        
+
         if (transaction.type === TransactionType.INCOME) {
           account.currentBalance = Number(account.currentBalance) - amount;
         } else {
