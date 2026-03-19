@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Patch, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Patch,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -9,7 +16,6 @@ import { UserService } from '../services/user.service';
 import { UpdateUserDto } from '../../infra/dtos/update-user.dto';
 import { JwtAuthGuard } from '../../../auth/infra/guards/jwt-auth.guard';
 import { CurrentUser } from '../../../auth/infra/decorators/current-user.decorator';
-import { User } from '../../infra/entities/user.entity';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -21,8 +27,8 @@ export class UsersController {
   @Get('me')
   @ApiOperation({ summary: 'Get current user profile' })
   @ApiResponse({ status: 200, description: 'Return current user profile.' })
-  async getProfile(@CurrentUser() user: User) {
-    const fullUser = await this.userService.findById(user.id);
+  async getProfile(@CurrentUser() user: { userId: string }) {
+    const fullUser = await this.userService.findById(user.userId);
     return {
       id: fullUser?.id,
       name: fullUser?.name,
@@ -37,11 +43,14 @@ export class UsersController {
   @Patch('me')
   @ApiOperation({ summary: 'Update current user profile' })
   @ApiResponse({ status: 200, description: 'User profile updated.' })
-  async updateProfile(@CurrentUser() user: User, @Body() body: UpdateUserDto) {
-    const currentUser = await this.userService.findById(user.id);
+  async updateProfile(
+    @CurrentUser() user: { userId: string },
+    @Body() body: UpdateUserDto,
+  ) {
+    const currentUser = await this.userService.findById(user.userId);
 
     if (!currentUser) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
 
     if (body.name) currentUser.name = body.name;

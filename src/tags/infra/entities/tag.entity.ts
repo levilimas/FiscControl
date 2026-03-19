@@ -18,7 +18,7 @@ export class Tag {
   name: string;
 
   @Column({ nullable: true })
-  color: string;
+  color: string | null;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })

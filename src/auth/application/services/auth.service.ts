@@ -227,11 +227,19 @@ export class AuthService {
   }
 
   private getAccessTokenSecret(): string {
-    return process.env.JWT_ACCESS_TOKEN_SECRET ?? 'default_jwt_access_secret';
+    const secret = process.env.JWT_ACCESS_TOKEN_SECRET;
+    if (!secret) {
+      throw new Error('Missing JWT_ACCESS_TOKEN_SECRET environment variable');
+    }
+    return secret;
   }
 
   private getRefreshTokenSecret(): string {
-    return process.env.JWT_REFRESH_TOKEN_SECRET ?? 'default_jwt_refresh_secret';
+    const secret = process.env.JWT_REFRESH_TOKEN_SECRET;
+    if (!secret) {
+      throw new Error('Missing JWT_REFRESH_TOKEN_SECRET environment variable');
+    }
+    return secret;
   }
 
   private getAccessTokenExpiresIn(): string {

@@ -31,7 +31,7 @@ export class Transaction {
   id: string;
 
   @Column({ name: 'account_id', nullable: true }) // Nullable se for crédito
-  accountId: string;
+  accountId: string | null;
 
   @ManyToOne(() => Account, (account) => account.transactions, {
     onDelete: 'CASCADE',
@@ -41,7 +41,7 @@ export class Transaction {
   account: Account;
 
   @Column({ name: 'credit_card_id', nullable: true })
-  creditCardId: string;
+  creditCardId: string | null;
 
   @ManyToOne(() => CreditCard, (card) => card.transactions, {
     onDelete: 'CASCADE',
@@ -51,10 +51,10 @@ export class Transaction {
   creditCard: CreditCard;
 
   @Column({ name: 'installment_number', nullable: true })
-  installmentNumber: number; // 1, 2, 3...
+  installmentNumber: number | null; // 1, 2, 3...
 
   @Column({ name: 'total_installments', nullable: true })
-  totalInstallments: number; // 10, 12...
+  totalInstallments: number | null; // 10, 12...
 
   @Column({
     type: 'enum',
@@ -73,13 +73,13 @@ export class Transaction {
   description: string;
 
   @Column({ nullable: true })
-  category: string; // Mantido por compatibilidade, mas deprecated
+  category: string | null; // Mantido por compatibilidade, mas deprecated
 
   @Column({ name: 'category_id', nullable: true })
-  categoryId: string;
+  categoryId: string | null;
 
   @Column({ name: 'external_id', nullable: true })
-  externalId: string;
+  externalId: string | null;
 
   @ManyToOne(() => Category, (category) => category.transactions, {
     onDelete: 'SET NULL',

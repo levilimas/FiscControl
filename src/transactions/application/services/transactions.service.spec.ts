@@ -169,8 +169,11 @@ describe('TransactionsService', () => {
 
       expect(result).toEqual([mockTransaction]);
       expect(mockTransactionRepository.find).toHaveBeenCalledWith({
-        where: { account: { userId: mockUser.userId } },
-        relations: ['account', 'categoryRelation'],
+        where: [
+          { account: { userId: mockUser.userId } },
+          { creditCard: { userId: mockUser.userId } },
+        ],
+        relations: ['account', 'creditCard', 'categoryRelation'],
         order: { date: 'DESC', createdAt: 'DESC' },
       });
     });

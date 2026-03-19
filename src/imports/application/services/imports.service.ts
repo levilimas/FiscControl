@@ -13,11 +13,7 @@ export class ImportsService {
 
   async importOfx(userId: string, accountId: string, fileBuffer: Buffer) {
     // 1. Validar conta
-    const account = await this.accountsService.findOne(userId, accountId);
-
-    if (!account) {
-      // Should not happen if findOne throws NotFoundException
-    }
+    await this.accountsService.findOne(userId, accountId);
 
     const ofxContent = fileBuffer.toString('utf-8');
     const transactions = this.parseOfx(ofxContent);
@@ -28,6 +24,7 @@ export class ImportsService {
     for (const trx of transactions) {
       // Check duplicate
       const existing = await this.transactionsService.findByExternalId(
+        userId,
         trx.fitId,
       );
       if (existing) {

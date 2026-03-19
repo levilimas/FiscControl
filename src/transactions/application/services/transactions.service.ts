@@ -99,16 +99,19 @@ export class TransactionsService {
 
   async findAll(userId: string): Promise<Transaction[]> {
     return this.transactionRepository.find({
-      where: { account: { userId } },
-      relations: ['account', 'categoryRelation'],
+      where: [{ account: { userId } }, { creditCard: { userId } }],
+      relations: ['account', 'creditCard', 'categoryRelation'],
       order: { date: 'DESC', createdAt: 'DESC' },
     });
   }
 
   async findOne(userId: string, id: string): Promise<Transaction> {
     const transaction = await this.transactionRepository.findOne({
-      where: { id, account: { userId } },
-      relations: ['account', 'categoryRelation'],
+      where: [
+        { id, account: { userId } },
+        { id, creditCard: { userId } },
+      ],
+      relations: ['account', 'creditCard', 'categoryRelation'],
     });
 
     if (!transaction) {
@@ -118,9 +121,16 @@ export class TransactionsService {
     return transaction;
   }
 
-  async findByExternalId(externalId: string): Promise<Transaction | null> {
+  async findByExternalId(
+    userId: string,
+    externalId: string,
+  ): Promise<Transaction | null> {
     return this.transactionRepository.findOne({
-      where: { externalId },
+      where: [
+        { externalId, account: { userId } },
+        { externalId, creditCard: { userId } },
+      ],
+      relations: ['account', 'creditCard'],
     });
   }
 
@@ -132,12 +142,21 @@ export class TransactionsService {
     return this.dataSource.transaction(async (manager) => {
       // 1. Buscar transação antiga com a conta
       const existingTransaction = await manager.findOne(Transaction, {
-        where: { id, account: { userId } },
-        relations: ['account'],
+        where: [
+          { id, account: { userId } },
+          { id, creditCard: { userId } },
+        ],
+        relations: ['account', 'creditCard'],
       });
 
       if (!existingTransaction) {
         throw new NotFoundException('Transaction not found');
+      }
+
+      if (!existingTransaction.account) {
+        throw new BadRequestException(
+          'Updating credit card transactions is not supported yet',
+        );
       }
 
       const oldAccount = existingTransaction.account;
@@ -214,8 +233,11 @@ export class TransactionsService {
   async remove(userId: string, id: string): Promise<void> {
     await this.dataSource.transaction(async (manager) => {
       const transaction = await manager.findOne(Transaction, {
-        where: { id, account: { userId } },
-        relations: ['account'],
+        where: [
+          { id, account: { userId } },
+          { id, creditCard: { userId } },
+        ],
+        relations: ['account', 'creditCard'],
       });
 
       if (!transaction) {
@@ -223,7 +245,7 @@ export class TransactionsService {
       }
 
       // Reverter saldo se COMPLETED
-      if (transaction.status === TransactionStatus.COMPLETED) {
+      if (transaction.status === TransactionStatus.COMPLETED && transaction.account) {
         const account = transaction.account;
         const amount = Number(transaction.amount);
 

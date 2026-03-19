@@ -48,12 +48,16 @@ describe('AuthController', () => {
   });
 
   it('should call authService.register on register', async () => {
+    const birthDate = '1990-01-01';
     const body: RegisterDto = {
       name: 'Test User',
       email: 'test@example.com',
       password: 'password',
       cpf: '12345678900',
       phone: '+5511999999999',
+      birthDate,
+      termsAccepted: true,
+      privacyPolicyAccepted: true,
     };
 
     const authResult = {
@@ -63,6 +67,7 @@ describe('AuthController', () => {
         name: body.name,
         cpf: body.cpf,
         phone: body.phone,
+        birthDate: new Date(birthDate),
       },
       tokens: {
         accessToken: 'access',
@@ -80,8 +85,21 @@ describe('AuthController', () => {
       name: body.name,
       cpf: body.cpf,
       phone: body.phone,
+      birthDate: body.birthDate,
+      termsAccepted: body.termsAccepted,
+      privacyPolicyAccepted: body.privacyPolicyAccepted,
     });
-    expect(result).toEqual(authResult);
+    expect(result).toEqual({
+      user: {
+        id: authResult.user.id,
+        email: authResult.user.email,
+        name: authResult.user.name,
+        cpf: authResult.user.cpf,
+        phone: authResult.user.phone,
+        birthDate: authResult.user.birthDate,
+      },
+      tokens: authResult.tokens,
+    });
   });
 
   it('should call authService.login on login', async () => {
