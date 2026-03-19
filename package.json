@@ -21,7 +21,8 @@
     "typeorm": "node -r ts-node/register ./node_modules/typeorm/cli -d src/database/typeorm.config.ts",
     "orm:generate": "npm run typeorm -- migration:generate",
     "orm:run": "npm run typeorm -- migration:run",
-    "orm:revert": "npm run typeorm -- migration:revert"
+    "orm:revert": "npm run typeorm -- migration:revert",
+    "prepare": "husky"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.1",
@@ -70,6 +71,7 @@
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
     "globals": "^16.0.0",
+    "husky": "^9.1.7",
     "jest": "^30.0.0",
     "prettier": "^3.4.2",
     "source-map-support": "^0.5.21",

@@ -245,7 +245,10 @@ export class TransactionsService {
       }
 
       // Reverter saldo se COMPLETED
-      if (transaction.status === TransactionStatus.COMPLETED && transaction.account) {
+      if (
+        transaction.status === TransactionStatus.COMPLETED &&
+        transaction.account
+      ) {
         const account = transaction.account;
         const amount = Number(transaction.amount);
 
