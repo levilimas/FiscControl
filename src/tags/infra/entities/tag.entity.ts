@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, ManyToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  ManyToMany,
+} from 'typeorm';
 import { User } from '../../../users/infra/entities/user.entity';
 import { Transaction } from '../../../transactions/infra/entities/transaction.entity';
 
@@ -13,7 +20,7 @@ export class Tag {
   @Column({ nullable: true })
   color: string;
 
-  @ManyToOne(() => User, (user) => user.categories)
+  @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   user: User;
 

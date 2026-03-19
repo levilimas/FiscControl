@@ -1,4 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { User } from '../../../users/infra/entities/user.entity';
 
 export enum HabitFrequency {
@@ -8,10 +17,10 @@ export enum HabitFrequency {
 }
 
 export enum HabitDifficulty {
-  EASY = 'EASY',     // XP baixo
+  EASY = 'EASY', // XP baixo
   MEDIUM = 'MEDIUM', // XP médio
-  HARD = 'HARD',     // XP alto
-  EPIC = 'EPIC',     // XP muito alto
+  HARD = 'HARD', // XP alto
+  EPIC = 'EPIC', // XP muito alto
 }
 
 @Entity('habits')

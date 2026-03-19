@@ -11,7 +11,7 @@ describe('ReportsService', () => {
   let service: ReportsService;
 
   const mockUser = { userId: 'user-id' };
-  
+
   const mockTransactionRepository = {
     find: jest.fn(),
   };
@@ -45,9 +45,9 @@ describe('ReportsService', () => {
       // Since getFinancialEvolution calls getCashFlow, and getCashFlow calls repository.find
       // We can just mock repository.find to return empty for simplicity or specific data
       mockTransactionRepository.find.mockResolvedValue([]);
-      
+
       const result = await service.getFinancialEvolution(mockUser.userId, 2);
-      
+
       expect(result).toHaveLength(2);
       expect(result[0]).toHaveProperty('balance');
       expect(result[1]).toHaveProperty('balance');
@@ -101,7 +101,7 @@ describe('ReportsService', () => {
         },
       ];
       mockTransactionRepository.find.mockResolvedValue(mockTransactions);
-      
+
       // Mock conversion: 50 USD -> 250 BRL
       mockExchangeRatesService.convert.mockResolvedValue(250);
 
@@ -110,7 +110,11 @@ describe('ReportsService', () => {
       expect(result.income).toBe(100);
       expect(result.expense).toBe(250);
       expect(result.balance).toBe(-150);
-      expect(mockExchangeRatesService.convert).toHaveBeenCalledWith(50, 'USD', 'BRL');
+      expect(mockExchangeRatesService.convert).toHaveBeenCalledWith(
+        50,
+        'USD',
+        'BRL',
+      );
     });
   });
 
@@ -134,17 +138,21 @@ describe('ReportsService', () => {
         },
       ];
       mockTransactionRepository.find.mockResolvedValue(mockTransactions);
-      
+
       // Mock conversion: 20 USD -> 100 BRL
       mockExchangeRatesService.convert.mockResolvedValue(100);
 
-      const result = await service.getExpensesByCategory(mockUser.userId, 10, 2023);
+      const result = await service.getExpensesByCategory(
+        mockUser.userId,
+        10,
+        2023,
+      );
 
       // Food: 100 + 100 (converted) = 200
       // Transport: 50
-      
-      const food = result.find(c => c.category === 'Food');
-      const transport = result.find(c => c.category === 'Transport');
+
+      const food = result.find((c) => c.category === 'Food');
+      const transport = result.find((c) => c.category === 'Transport');
 
       expect(food).toBeDefined();
       expect(food?.amount).toBe(200);

@@ -73,8 +73,6 @@ describe('TransactionsService', () => {
     }).compile();
 
     service = module.get<TransactionsService>(TransactionsService);
-    let dataSource: DataSource;
-    dataSource = module.get<DataSource>(DataSource);
 
     jest.clearAllMocks();
   });

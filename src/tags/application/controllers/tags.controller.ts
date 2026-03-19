@@ -59,4 +59,3 @@ export class TagsController {
     return this.tagsService.remove(user.userId, id);
   }
 }
-

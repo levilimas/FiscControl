@@ -1,7 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Habit, HabitLog, HabitDifficulty } from '../../infra/entities/habit.entity';
+import {
+  Habit,
+  HabitLog,
+  HabitDifficulty,
+} from '../../infra/entities/habit.entity';
 import { CreateHabitDto } from '../../infra/dtos/create-habit.dto';
 import { UpdateHabitDto } from '../../infra/dtos/update-habit.dto';
 
@@ -16,18 +20,23 @@ export class HabitsService {
 
   private calculateXP(difficulty: HabitDifficulty): number {
     switch (difficulty) {
-      case HabitDifficulty.EASY: return 10;
-      case HabitDifficulty.MEDIUM: return 25;
-      case HabitDifficulty.HARD: return 50;
-      case HabitDifficulty.EPIC: return 100;
-      default: return 10;
+      case HabitDifficulty.EASY:
+        return 10;
+      case HabitDifficulty.MEDIUM:
+        return 25;
+      case HabitDifficulty.HARD:
+        return 50;
+      case HabitDifficulty.EPIC:
+        return 100;
+      default:
+        return 10;
     }
   }
 
   async create(userId: string, createHabitDto: CreateHabitDto): Promise<Habit> {
     const habit = this.habitRepository.create({
       ...createHabitDto,
-      user: { id: userId } as any,
+      user: { id: userId } as Habit['user'],
     });
     return this.habitRepository.save(habit);
   }
@@ -50,7 +59,11 @@ export class HabitsService {
     return habit;
   }
 
-  async update(userId: string, id: string, updateHabitDto: UpdateHabitDto): Promise<Habit> {
+  async update(
+    userId: string,
+    id: string,
+    updateHabitDto: UpdateHabitDto,
+  ): Promise<Habit> {
     const habit = await this.findOne(userId, id);
     this.habitRepository.merge(habit, updateHabitDto);
     return this.habitRepository.save(habit);
@@ -61,13 +74,17 @@ export class HabitsService {
     await this.habitRepository.remove(habit);
   }
 
-  async completeHabit(userId: string, id: string): Promise<{ xpEarned: number; streak: number }> {
+  async completeHabit(
+    userId: string,
+    id: string,
+  ): Promise<{ xpEarned: number; streak: number }> {
     const habit = await this.findOne(userId, id);
     const today = new Date();
-    
+
     // Verifica se já completou hoje
     const todayStr = today.toISOString().split('T')[0];
-    const alreadyCompleted = await this.habitLogRepository.createQueryBuilder('log')
+    const alreadyCompleted = await this.habitLogRepository
+      .createQueryBuilder('log')
       .where('log.habit_id = :habitId', { habitId: id })
       .andWhere('DATE(log.date) = :date', { date: todayStr })
       .getOne();
@@ -96,4 +113,3 @@ export class HabitsService {
     return { xpEarned: xp, streak: habit.streak };
   }
 }
-

@@ -1,12 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Between, LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
+import { Repository, Between } from 'typeorm';
 import {
   Transaction,
   TransactionStatus,
   TransactionType,
 } from '../../../transactions/infra/entities/transaction.entity';
 import { ExchangeRatesService } from '../../../exchange-rates/application/services/exchange-rates.service';
+
+type CashFlowPoint = {
+  period: { month: number; year: number };
+  targetCurrency: string;
+  income: number;
+  expense: number;
+  balance: number;
+};
 
 @Injectable()
 export class ReportsService {
@@ -20,9 +28,9 @@ export class ReportsService {
     userId: string,
     months: number = 6,
     targetCurrency: string = 'BRL',
-  ) {
+  ): Promise<CashFlowPoint[]> {
     const today = new Date();
-    const results = [];
+    const results: CashFlowPoint[] = [];
 
     for (let i = months - 1; i >= 0; i--) {
       const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
@@ -41,10 +49,7 @@ export class ReportsService {
     return results;
   }
 
-  async getPendingTransactions(
-    userId: string,
-    targetCurrency: string = 'BRL',
-  ) {
+  async getPendingTransactions(userId: string, targetCurrency: string = 'BRL') {
     // Buscar transações PENDENTES futuras ou atrasadas
     // Assumimos que "PENDING" significa que ainda não foi pago/recebido
     const transactions = await this.transactionRepository.find({
@@ -101,7 +106,7 @@ export class ReportsService {
     month: number,
     year: number,
     targetCurrency: string = 'BRL',
-  ) {
+  ): Promise<CashFlowPoint> {
     const startDate = new Date(year, month - 1, 1);
     const endDate = new Date(year, month, 0, 23, 59, 59, 999);
 

@@ -65,4 +65,3 @@ export class HabitsController {
     return this.habitsService.completeHabit(user.userId, id);
   }
 }
-

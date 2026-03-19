@@ -8,7 +8,10 @@ export class CreateHabitDto {
   @IsNotEmpty()
   title: string;
 
-  @ApiPropertyOptional({ example: 'Ler 10 páginas de um livro', description: 'Description' })
+  @ApiPropertyOptional({
+    example: 'Ler 10 páginas de um livro',
+    description: 'Description',
+  })
   @IsString()
   @IsOptional()
   description?: string;

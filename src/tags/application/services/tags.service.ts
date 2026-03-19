@@ -15,7 +15,7 @@ export class TagsService {
   async create(userId: string, createTagDto: CreateTagDto): Promise<Tag> {
     const tag = this.tagRepository.create({
       ...createTagDto,
-      user: { id: userId } as any,
+      user: { id: userId } as Tag['user'],
     });
     return this.tagRepository.save(tag);
   }
@@ -53,4 +53,3 @@ export class TagsService {
     await this.tagRepository.remove(tag);
   }
 }
-
