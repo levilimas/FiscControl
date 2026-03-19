@@ -12,3 +12,4 @@ frontend-web/.env
 Thumbs.db
 
 *.local
+backend/
